@@ -52,29 +52,29 @@ public final class Atmosphere {
     }
 }
     
-extension Atmosphere {
-    public func retrieveProfile(for authorHandle: String) async throws -> Profile {
-        do {
-            let profile = try await atProto().getProfile(for: authorHandle)
-            
-            return Profile(
-                handle: profile.actorHandle,
-                displayName: profile.displayName, description: profile.description,
-                avatarURL: profile.avatarImageURL,
-                bannerURL: profile.bannerImageURL
-            )
-        }
-        catch {
-            print()
-            print("Error retrieveing profile for \(authorHandle)")
-            print(error)
-            print()
-            
-            throw error
-        }
-    }
-    
-}
+//extension Atmosphere {
+//    public func retrieveProfile(for authorHandle: String) async throws -> Profile {
+//        do {
+//            let profile = try await atProto().getProfile(for: authorHandle)
+//            
+//            return Profile(
+//                handle: profile.actorHandle,
+//                displayName: profile.displayName, description: profile.description,
+//                avatarURL: profile.avatarImageURL,
+//                bannerURL: profile.bannerImageURL
+//            )
+//        }
+//        catch {
+//            print()
+//            print("Error retrieveing profile for \(authorHandle)")
+//            print(error)
+//            print()
+//            
+//            throw error
+//        }
+//    }
+//    
+//}
 
 public struct ProfileRetriever: Sendable {
     let handle: String
@@ -85,6 +85,15 @@ public struct ProfileRetriever: Sendable {
     
     // TODO: can I let this function take a Atmosphere as a parameter? probably not
     public func retrieveProfile(using atmosphere: Atmosphere = .uncredentialed) async throws -> Profile {
-        try await atmosphere.retrieveProfile(for: handle)
+        
+        let kit = try await atmosphere.atProto()
+        let profile = try await kit.getProfile(for: handle)
+
+        return Profile(
+            handle: profile.actorHandle,
+            displayName: profile.displayName, description: profile.description,
+            avatarURL: profile.avatarImageURL,
+            bannerURL: profile.bannerImageURL
+        )
     }
 }
