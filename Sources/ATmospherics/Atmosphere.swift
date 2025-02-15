@@ -52,5 +52,26 @@ public final class Atmosphere {
     }
 }
     
-
-
+extension Atmosphere {
+    public func retrieveProfile(for authorHandle: String) async throws -> Profile {
+        do {
+            let profile = try await atProto().getProfile(for: authorHandle)
+            
+            return Profile(
+                handle: profile.actorHandle,
+                displayName: profile.displayName, description: profile.description,
+                avatarURL: profile.avatarImageURL,
+                bannerURL: profile.bannerImageURL
+            )
+        }
+        catch {
+            print()
+            print("Error retrieveing profile for \(authorHandle)")
+            print(error)
+            print()
+            
+            throw error
+        }
+    }
+    
+}
