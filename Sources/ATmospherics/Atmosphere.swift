@@ -76,7 +76,7 @@ extension Atmosphere {
     
 }
 
-public struct ProfileRetriever {
+public struct ProfileRetriever: Sendable {
     let handle: String
     
     public init(handle: String) {
