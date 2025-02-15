@@ -28,7 +28,7 @@ public struct ATAvatarRetriever {
 }
 
 public extension Atmosphere {
-    func retriveProfile(for handle: String) async throws -> ATProfileRetriever.Profile {
+    func retrieveProfile(for handle: String) async throws -> ATProfileRetriever.Profile {
         try await ATProfileRetriever(atmosphere: self).retrieveProfile(for: handle)
     }
 }
