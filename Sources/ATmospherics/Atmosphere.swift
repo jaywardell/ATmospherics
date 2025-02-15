@@ -75,3 +75,11 @@ extension Atmosphere {
     }
     
 }
+
+struct ProfileRetriever {
+    let handle: String
+    
+    func retrieveProfile() async throws -> Profile {
+        try await Atmosphere.uncredentialed.retrieveProfile(for: handle)
+    }
+}
