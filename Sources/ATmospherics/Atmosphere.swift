@@ -9,7 +9,7 @@ import Foundation
 internal import ATProtoKit
 
 /// encapsulates the authentication process of ATProtoKit
-public actor Atmosphere {
+public final class Atmosphere {
     
     public struct Credential {
         let handle: String
