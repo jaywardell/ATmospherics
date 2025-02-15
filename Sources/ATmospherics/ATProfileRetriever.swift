@@ -19,14 +19,6 @@ public struct ATProfileRetriever {
         self.atmosphere = atmosphere
     }
     
-    public struct Profile: Sendable {
-        public let handle: String
-        public let displayName: String?
-        public let description: String?
-        public let avatarURL: URL?
-        public let bannerURL: URL?
-    }
-
     public func retrieveProfile(for authorHandle: String) async throws -> Profile {
         do {
             let profile = try await atmosphere.atProto().getProfile(for: authorHandle)
