@@ -23,7 +23,8 @@ public final class Atmosphere {
         self.credential = credential
     }
     
-    public static var uncredentialed: Atmosphere { Atmosphere(credential: nil) }
+    // unsafe is not a big deal here because
+    nonisolated(unsafe) public static let uncredentialed = Atmosphere(credential: nil)
     
     func atProto() async throws -> ATProtoKit {
         if let cachedATProto { return cachedATProto }
