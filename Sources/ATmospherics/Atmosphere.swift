@@ -34,10 +34,10 @@ public final class Atmosphere {
             let config = ATProtocolConfiguration(handle: credential.handle, appPassword: credential.appPassword)
             try await config.authenticate()
             
-            out = ATProtoKit(sessionConfiguration: config)
+            out = await ATProtoKit(sessionConfiguration: config)
         }
         else {
-            out = ATProtoKit()
+            out = await ATProtoKit()
         }
         
         cachedATProto = out
