@@ -12,7 +12,6 @@ public struct ProfileRetriever: Sendable {
         self.handle = handle
     }
     
-    // TODO: can I let this function take a Atmosphere as a parameter? probably not
     public func retrieveProfile(using atmosphere: Atmosphere = .uncredentialed) async throws -> Profile {
         
         let kit = try await atmosphere.atProto()
