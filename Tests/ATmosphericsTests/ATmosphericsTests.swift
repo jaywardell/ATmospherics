@@ -1,11 +1,12 @@
 import Testing
 @testable import ATmospherics
+import ATProtoKit
 
 @Suite("Atmosphere")
 struct AtmosephereTests {
     
     @Test("Behavior of uncredentialed Atmosphere")
-    func example() async throws {
+    func uncredentialed() async throws {
         
         let sut = Atmosphere.uncredentialed
         
@@ -13,9 +14,34 @@ struct AtmosephereTests {
         
         #expect(nil == proto.session)
     }
+    
+    @preconcurrency
+    @Test("Behavior of Atmosphere with empty credentials")
+    func empty_credentials() async throws {
+        let sut = Atmosphere(credential: .init(handle: "", appPassword: ""))
+                
+        do {
+            _ = try await sut.atProto()
+        }
+        catch {
+            let error = try #require(error as? ATAPIError)
+            switch error {
+                
+            // the error we expect
+            case .unauthorized: break
+            
+            // this can sometimes happen when we're doing lots of tests
+            case .tooManyRequests: break
+                
+            // any other error is not expected
+            default: Issue.record("received an unexpected error \(error)")
+            }
+        }
+    }
+
 
     @Test("Behavior of credentialed Atmosphere")
-    func example2() async throws {
+    func credentialed() async throws {
         let sut = Atmosphere(credential: .testingAccount)
         
         do {
