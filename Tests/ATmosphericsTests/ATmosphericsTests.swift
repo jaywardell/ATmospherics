@@ -60,8 +60,15 @@ struct AtmosephereTests {
 }
 
 extension Atmosphere.Credential {
-    // an account that can be used for testing purposes
-    // yes, I'm releasing this on the web
-    // please don't abuse
+    /// an account that can be used for testing purposes
+    ///
+    /// yes, I'm releasing this on the web
+    ///
+    /// please don't abuse
+    ///
+    /// If you do, all you'll end up doing is breaking these tests
+    /// which would be rude and destructive, but wouldn't get you anywhere.
+    ///
+    /// If you want to hack something, please find something else
     static let testingAccount = Atmosphere.Credential(handle: "jay+bluesky_testing@jaywardell.me", appPassword: "vokdib-koxBo4-huczyz")
 }
