@@ -28,4 +28,8 @@ public struct ATURI: Sendable {
     var pathComponents: [String] {
         path.components(separatedBy: String(pathSeparator))
     }
+    
+    var blueskyPostID: String? {
+        pathComponents.itemAfterFirstInstance(of: "app.bsky.feed.post")
+    }
 }

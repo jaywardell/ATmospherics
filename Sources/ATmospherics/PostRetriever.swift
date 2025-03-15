@@ -43,7 +43,7 @@ public struct PostRetriever: Sendable {
             let postID = url.blueSkyPostID
             
             let found = response.feed.map(\.post).first { post in
-                ATURI(post.uri)?.pathComponents.last == postID
+                ATURI(post.uri)?.blueskyPostID == postID
             }
             
             if let found {
