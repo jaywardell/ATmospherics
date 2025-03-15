@@ -18,18 +18,9 @@ struct retrievePostATURI {
     @Test("Throws if given uncredentialed ")
     func throws_if_not_credentialed() async throws {
         let sut = PostRetriever()
-        do {
+        
+        await #expect(throws: ATRequestPrepareError.missingActiveSession) {
             _ = try await sut.retrievePost(at: examplePostURI, using: .uncredentialed)
-        }
-        catch {
-            let error = try #require(error as? ATRequestPrepareError)
-            switch error {
-                
-            case .missingActiveSession: break
-                
-                // any other error is not expected
-                default: Issue.record("received an unexpected error \(error)")
-            }
         }
     }
     
