@@ -42,3 +42,19 @@ struct retrievePostATURI {
     }
 
 }
+
+@Suite("Retrieve post for AT URI")
+struct retrievePostURL {
+    
+    private let knownPrivatePost = URL(string: "https://bsky.app/profile/tee-tee.bsky.social/post/3lk5iom43n22k")!
+    
+    @Test("Throws if given uncredentialed atmopsphere")
+    func throws_if_not_credentialed() async throws {
+        let sut = PostRetriever()
+        
+        await #expect(throws: ATRequestPrepareError.missingActiveSession) {
+            _ = try await sut.retrievePost(for: knownPrivatePost, using: .uncredentialed)
+        }
+    }
+
+}

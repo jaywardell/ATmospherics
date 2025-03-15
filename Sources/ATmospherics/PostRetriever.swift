@@ -23,6 +23,17 @@ public struct PostRetriever: Sendable {
         
         return try post.getPost()
     }
+    
+    public func retrievePost(for url: URL, using atmosphere: Atmosphere) async throws -> Post? {
+        
+        let kit = try await atmosphere.atProto()
+        guard let post = try await kit.getPosts([url.absoluteString]).posts.first else {
+            return nil
+        }
+        
+        return try post.getPost()
+    }
+
 }
 
 fileprivate extension AppBskyLexicon.Feed.PostViewDefinition {
