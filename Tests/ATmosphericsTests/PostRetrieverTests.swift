@@ -46,6 +46,8 @@ struct retrievePostATURI {
 @Suite("Retrieve post for AT URI")
 struct retrievePostURL {
     
+    // TODO: use a known private post in the testing account,
+    // not one posted by some random person
     private let knownPrivatePost = URL(string: "https://bsky.app/profile/tee-tee.bsky.social/post/3lk5iom43n22k")!
     
     @Test("Throws if given uncredentialed atmopsphere")
