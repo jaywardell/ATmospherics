@@ -12,7 +12,7 @@ import ATProtoKit
 
 struct Test {
 
-    let examplePostURI = "at://did:plc:o7axnjyztfjoowvmlyyekpwb/app.bsky.feed.post/3ljujgen6322k"
+    let examplePostURI = ATURI("at://did:plc:o7axnjyztfjoowvmlyyekpwb/app.bsky.feed.post/3ljujgen6322k")!
 
     @Test("Throws if given uncredentialed ")
     func throws_if_not_credentialed() async throws {
@@ -40,7 +40,7 @@ struct Test {
         do {
             let post = try await sut.retrievePost(at: examplePostURI, using: atmosphere)
             #expect(nil != post)
-            #expect(post?.uri == examplePostURI)
+            #expect(post?.uri == examplePostURI.at)
         }
         catch {
             print(error.localizedDescription)

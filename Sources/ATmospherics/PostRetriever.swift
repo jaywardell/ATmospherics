@@ -14,10 +14,10 @@ public struct PostRetriever: Sendable {
         case NotAPostRecord
     }
     
-    public func retrievePost(at uri: String, using atmosphere: Atmosphere) async throws -> Post? {
+    public func retrievePost(at uri: ATURI, using atmosphere: Atmosphere) async throws -> Post? {
         
         let kit = try await atmosphere.atProto()
-        guard let post = try await kit.getPosts([uri]).posts.first else {
+        guard let post = try await kit.getPosts([uri.at]).posts.first else {
             return nil
         }
         
