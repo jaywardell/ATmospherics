@@ -15,4 +15,17 @@ public struct ATURI: Sendable {
         guard string.hasPrefix("at:") else { return nil }
         self.at = string
     }
+    
+    var pathSeparator: String.Element { "/" }
+    
+    var path: String {
+        guard let startIndex = at.firstIndex(of: pathSeparator)
+        else { return "" }
+        let suffix = at.suffix(from: startIndex)
+        return String(suffix)
+    }
+    
+    var pathComponents: [String] {
+        path.components(separatedBy: String(pathSeparator))
+    }
 }
