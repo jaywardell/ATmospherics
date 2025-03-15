@@ -42,7 +42,6 @@ public struct PostRetriever: Sendable {
                         
             let postID = url.blueSkyPostID
             
-            // right about ehre is where I'm working from...
             let found = response.feed.map(\.post).first { post in
                 post.uri.components(separatedBy: "/").last == postID
             }
