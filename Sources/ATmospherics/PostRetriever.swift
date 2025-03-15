@@ -11,7 +11,7 @@ internal import ATProtoKit
 public struct PostRetriever: Sendable {
         
     enum Error: Swift.Error {
-        case NotAPostRecord
+        case AuthorNotAvailable
     }
     
     public func retrievePost(at uri: ATURI, using atmosphere: Atmosphere) async throws -> Post? {
@@ -26,12 +26,27 @@ public struct PostRetriever: Sendable {
     
     public func retrievePost(for url: URL, using atmosphere: Atmosphere) async throws -> Post? {
         
-        let kit = try await atmosphere.atProto()
-        guard let post = try await kit.getPosts([url.absoluteString]).posts.first else {
-            return nil
+        guard let handle = url.blueSkyProfileHandle else {
+            throw Error.AuthorNotAvailable
         }
         
-        return try post.getPost()
+        let profileRetriever = ProfileRetriever(handle: handle)
+        let profile = try await profileRetriever.retrieveProfile(using: atmosphere)
+        
+        let kit = try await atmosphere.atProto()
+        let feedPosts = try await kit.getAuthorFeed(by: profile.did, limit: 100, cursor: nil, postFilter: nil, shouldIncludePins: nil)
+  
+        print(feedPosts.feed.map(\.post).map(\.uri))
+        
+        let postID = url.blueSkyPostID
+        
+        // right about ehre is where I'm working from...
+        let found = feedPosts.feed.map(\.post).first { post in
+            post.uri.components(separatedBy: "/").last == postID
+        }
+        
+        
+        return try found?.getPost()
     }
 
 }
