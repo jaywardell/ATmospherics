@@ -7,7 +7,7 @@
 
 import Foundation
 
-public struct ATURI {
+public struct ATURI: Sendable {
     
     let at: String
     
