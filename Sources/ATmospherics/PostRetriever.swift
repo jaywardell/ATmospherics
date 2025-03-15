@@ -21,8 +21,21 @@ public struct PostRetriever: Sendable {
             return nil
         }
         
-        guard let record = post.record.getRecord(ofType: AppBskyLexicon.Feed.PostRecord.self) else {
-            throw Error.NotAPostRecord
+        return try post.getPost()
+    }
+}
+
+fileprivate extension AppBskyLexicon.Feed.PostViewDefinition {
+    
+    enum PostError: Swift.Error {
+        case NotAPostRecord
+    }
+
+    // NOTE: technically, much of what's in here isn't covered by unit tests
+    func getPost() throws -> Post {
+        
+        guard let record = record.getRecord(ofType: AppBskyLexicon.Feed.PostRecord.self) else {
+            throw PostError.NotAPostRecord
         }
         print(record)
         
@@ -40,16 +53,16 @@ public struct PostRetriever: Sendable {
         
         
         return Post(
-            uri: post.uri,
-            cid: post.cid,
+            uri: uri,
+            cid: cid,
             text: record.text,
             links: links.compactMap(URL.init(string:)),
             date: record.createdAt,
-            replyCount: post.replyCount,
-            repostCount: post.repostCount,
-            likeCount: post.likeCount,
-            quoteCount: post.quoteCount
+            replyCount: replyCount,
+            repostCount: repostCount,
+            likeCount: likeCount,
+            quoteCount: quoteCount
         )
-    }
 
+    }
 }
