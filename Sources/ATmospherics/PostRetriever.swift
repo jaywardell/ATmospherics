@@ -9,18 +9,12 @@ import Foundation
 internal import ATProtoKit
 
 public struct PostRetriever: Sendable {
-    
-    let uri: String
-    
-    public init(uri: String) {
-        self.uri = uri
-    }
-    
+        
     enum Error: Swift.Error {
         case NotAPostRecord
     }
     
-    public func retrievePost(using atmosphere: Atmosphere) async throws -> Post? {
+    public func retrievePost(at uri: String, using atmosphere: Atmosphere) async throws -> Post? {
         
         let kit = try await atmosphere.atProto()
         guard let post = try await kit.getPosts([uri]).posts.first else {

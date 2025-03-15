@@ -16,9 +16,9 @@ struct Test {
 
     @Test("Throws if given uncredentialed ")
     func throws_if_not_credentialed() async throws {
-        let sut = PostRetriever(uri: examplePostURI)
+        let sut = PostRetriever()
         do {
-            _ = try await sut.retrievePost(using: .uncredentialed)
+            _ = try await sut.retrievePost(at: examplePostURI, using: .uncredentialed)
         }
         catch {
             let error = try #require(error as? ATRequestPrepareError)
@@ -36,9 +36,9 @@ struct Test {
     func retrieve_posts() async throws {
         let atmosphere = Atmosphere(credential: .testingAccount)
 
-        let sut = PostRetriever(uri: examplePostURI)
+        let sut = PostRetriever()
         do {
-            let post = try await sut.retrievePost(using: atmosphere)
+            let post = try await sut.retrievePost(at: examplePostURI, using: atmosphere)
             #expect(nil != post)
             #expect(post?.uri == examplePostURI)
         }
