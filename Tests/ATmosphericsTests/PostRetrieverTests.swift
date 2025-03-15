@@ -13,6 +13,8 @@ import ATProtoKit
 @Suite("Retrieve post for AT URI")
 struct retrievePostATURI {
 
+    private let examplePostURI = ATURI("at://did:plc:o7axnjyztfjoowvmlyyekpwb/app.bsky.feed.post/3ljujgen6322k")!
+
     @Test("Throws if given uncredentialed ")
     func throws_if_not_credentialed() async throws {
         let sut = PostRetriever()
@@ -49,6 +51,3 @@ struct retrievePostATURI {
     }
 
 }
-
-fileprivate let examplePostURI = ATURI("at://did:plc:o7axnjyztfjoowvmlyyekpwb/app.bsky.feed.post/3ljujgen6322k")!
-
