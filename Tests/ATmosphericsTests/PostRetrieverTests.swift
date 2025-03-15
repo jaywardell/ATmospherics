@@ -10,9 +10,8 @@ import Foundation
 import ATProtoKit
 @testable import ATmospherics
 
-struct Test {
-
-    let examplePostURI = ATURI("at://did:plc:o7axnjyztfjoowvmlyyekpwb/app.bsky.feed.post/3ljujgen6322k")!
+@Suite("Retrieve post for AT URI")
+struct retrievePostATURI {
 
     @Test("Throws if given uncredentialed ")
     func throws_if_not_credentialed() async throws {
@@ -50,3 +49,6 @@ struct Test {
     }
 
 }
+
+fileprivate let examplePostURI = ATURI("at://did:plc:o7axnjyztfjoowvmlyyekpwb/app.bsky.feed.post/3ljujgen6322k")!
+
