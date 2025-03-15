@@ -11,7 +11,7 @@ internal import ATProtoKit
 /// encapsulates the authentication process of ATProtoKit
 public final class Atmosphere {
     
-    public struct Credential {
+    public struct Credential: Sendable {
         let handle: String
         let appPassword: String
     }

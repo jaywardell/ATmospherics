@@ -7,6 +7,7 @@
 
 import Foundation
 
+/// A Container type that holds the data that can be retrieved by ProfileRetriever
 public struct Profile: Sendable {
     public let handle: String
     public let displayName: String?

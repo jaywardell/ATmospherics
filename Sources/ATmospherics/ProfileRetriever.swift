@@ -6,13 +6,15 @@
 //
 
 public struct ProfileRetriever: Sendable {
+    
+    /// the handle of a ATProto profile
     let handle: String
     
     public init(handle: String) {
         self.handle = handle
     }
     
-    // TODO: can I let this function take a Atmosphere as a parameter? probably not
+    /// retrieves data about the ATProto profile stored in `handle`
     public func retrieveProfile(using atmosphere: Atmosphere = .uncredentialed) async throws -> Profile {
         
         let kit = try await atmosphere.atProto()
