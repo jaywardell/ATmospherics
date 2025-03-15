@@ -35,12 +35,11 @@ public struct PostRetriever: Sendable {
         
         let kit = try await atmosphere.atProto()
         
+        let postID = url.blueSkyPostID
         var cursor: String?
         repeat {
-            let response = try await kit.getAuthorFeed(by: profile.did, limit: limit, cursor: cursor, postFilter: nil, shouldIncludePins: nil)
-                        
-            let postID = url.blueSkyPostID
-            
+            let response = try await kit.getAuthorFeed(by: profile.did, limit: limit, cursor: cursor, postFilter: nil)
+                                    
             let found = response.feed.map(\.post).first { post in
                 ATURI(post.uri)?.blueskyPostID == postID
             }
