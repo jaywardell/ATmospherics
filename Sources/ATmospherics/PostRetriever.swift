@@ -24,7 +24,7 @@ public struct PostRetriever: Sendable {
         return try post.getPost()
     }
     
-    public func retrievePost(for url: URL, using atmosphere: Atmosphere) async throws -> Post? {
+    public func retrievePost(for url: URL, using atmosphere: Atmosphere, limit: Int = 100) async throws -> Post? {
         
         guard let handle = url.blueSkyProfileHandle else {
             throw Error.AuthorNotAvailable
@@ -34,19 +34,32 @@ public struct PostRetriever: Sendable {
         let profile = try await profileRetriever.retrieveProfile(using: atmosphere)
         
         let kit = try await atmosphere.atProto()
-        let feedPosts = try await kit.getAuthorFeed(by: profile.did, limit: 100, cursor: nil, postFilter: nil, shouldIncludePins: nil)
-  
-        print(feedPosts.feed.map(\.post).map(\.uri))
         
-        let postID = url.blueSkyPostID
+        var cursor: String?
         
-        // right about ehre is where I'm working from...
-        let found = feedPosts.feed.map(\.post).first { post in
-            post.uri.components(separatedBy: "/").last == postID
-        }
+        repeat {
+            let response = try await kit.getAuthorFeed(by: profile.did, limit: limit, cursor: cursor, postFilter: nil, shouldIncludePins: nil)
+                        
+            let postID = url.blueSkyPostID
+            
+            // right about ehre is where I'm working from...
+            let found = response.feed.map(\.post).first { post in
+                post.uri.components(separatedBy: "/").last == postID
+            }
+            
+            if let found {
+                return try found.getPost()
+            }
+            else {
+                // empirically, it appears that
+                // response.cursor is nil
+                // if there are no more posts
+                // for the API to return
+                cursor = response.cursor
+            }
+        } while cursor != nil
         
-        
-        return try found?.getPost()
+        return nil
     }
 
 }

@@ -46,7 +46,7 @@ struct retrievePostATURI {
 @Suite("Retrieve post for AT URI")
 struct retrievePostURL {
     
-    private let knownPrivatePost = URL(string: "https://bsky.app/profile/tee-tee.bsky.social/post/3lkfmpa6mwc2t")!
+    private let knownPrivatePost = URL(string: "https://bsky.app/profile/tee-tee.bsky.social/post/3lk5iom43n22k")!
     
     @Test("Throws if given uncredentialed atmopsphere")
     func throws_if_not_credentialed() async throws {
