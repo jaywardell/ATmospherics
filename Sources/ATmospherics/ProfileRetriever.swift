@@ -22,6 +22,7 @@ public struct ProfileRetriever: Sendable {
 
         return Profile(
             handle: profile.actorHandle,
+            did: profile.actorDID,
             displayName: profile.displayName, description: profile.description,
             avatarURL: profile.avatarImageURL,
             bannerURL: profile.bannerImageURL
