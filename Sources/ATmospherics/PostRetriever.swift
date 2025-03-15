@@ -36,7 +36,6 @@ public struct PostRetriever: Sendable {
         let kit = try await atmosphere.atProto()
         
         var cursor: String?
-        
         repeat {
             let response = try await kit.getAuthorFeed(by: profile.did, limit: limit, cursor: cursor, postFilter: nil, shouldIncludePins: nil)
                         
@@ -60,7 +59,6 @@ public struct PostRetriever: Sendable {
         
         return nil
     }
-
 }
 
 fileprivate extension AppBskyLexicon.Feed.PostViewDefinition {
