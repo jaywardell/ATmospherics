@@ -50,12 +50,6 @@ public struct PostRetriever: Sendable {
             likeCount: post.likeCount,
             quoteCount: post.quoteCount
         )
-//        return Profile(
-//            handle: profile.actorHandle,
-//            displayName: profile.displayName, description: profile.description,
-//            avatarURL: profile.avatarImageURL,
-//            bannerURL: profile.bannerImageURL
-//        )
     }
 
 }
