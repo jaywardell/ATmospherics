@@ -15,7 +15,7 @@ struct retrievePostATURI {
 
     private let examplePostURI = ATURI("at://did:plc:o7axnjyztfjoowvmlyyekpwb/app.bsky.feed.post/3ljujgen6322k")!
 
-    @Test("Throws if given uncredentialed ")
+    @Test("Throws if given uncredentialed atmopsphere")
     func throws_if_not_credentialed() async throws {
         let sut = PostRetriever()
         
