@@ -19,25 +19,19 @@ extension URL {
     
     var blueSkyProfileHandle: String? {
         guard isHTTPURL,
-              host == "bsky.app",
-              let profileIndex =
-                pathComponents.firstIndex(of: "profile"),
-                pathComponents.count > profileIndex + 1
+              host == "bsky.app"
         else { return nil }
         
-        return pathComponents[profileIndex+1]
+        return pathComponents.itemAfterFirstInstance(of: "profile")
     }
     
     // TODO: need tests for this
     var blueSkyPostID: String? {
         guard isHTTPURL,
-              host == "bsky.app",
-              let profileIndex =
-                pathComponents.firstIndex(of: "post"),
-                pathComponents.count > profileIndex + 1
+              host == "bsky.app"
         else { return nil }
         
-        return pathComponents[profileIndex+1]
+        return pathComponents.itemAfterFirstInstance(of: "post")
     }
 
 }
