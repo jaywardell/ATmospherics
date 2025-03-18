@@ -72,7 +72,6 @@ fileprivate extension AppBskyLexicon.Feed.PostViewDefinition {
         guard let record = record.getRecord(ofType: AppBskyLexicon.Feed.PostRecord.self) else {
             throw PostError.NotAPostRecord
         }
-        print(record)
         
         let links: [String] = record.facets?
             .flatMap { facet in facet.features }
