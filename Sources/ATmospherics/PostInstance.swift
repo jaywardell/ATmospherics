@@ -26,7 +26,9 @@ public struct PostInstance {
 
     public let links: [URL]
     
-    // TODO: add images property
+    // TODO: pull image URLs from result of getPosts() call
+    // also, pull other info than just urls, like at text
+    public var imageURLs: [URL] { [] }
     
     // TODO: add other embeds as properties (e.g. video)
     
