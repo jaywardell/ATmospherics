@@ -9,7 +9,7 @@ import Foundation
 internal import ATProtoKit
 
 public struct PostRetriever: Sendable {
-        
+    
     enum Error: Swift.Error {
         case AuthorNotAvailable
     }
@@ -24,7 +24,12 @@ public struct PostRetriever: Sendable {
         return try post.getPost()
     }
     
-    public func retrievePost(for url: URL, using atmosphere: Atmosphere, limit: Int = 100) async throws -> PostInstance? {
+    public func retrievePostInstance(for url: URL, using atmosphere: Atmosphere, batchSize limit: Int = 100) async throws -> PostInstance? {
+        
+        try await retrievePost(for: url, using: atmosphere, batchSize: limit)?.post
+    }
+
+    public func retrievePost(for url: URL, using atmosphere: Atmosphere, batchSize  limit: Int = 100) async throws -> Post? {
         
         guard let handle = url.blueSkyProfileHandle else {
             throw Error.AuthorNotAvailable
@@ -45,7 +50,8 @@ public struct PostRetriever: Sendable {
             }
             
             if let found {
-                return try found.getPost()
+                let post = try found.getPost()
+                return Post(post: post, author: profile)
             }
             else {
                 // empirically, it appears that

@@ -43,8 +43,60 @@ struct retrievePostATURI {
 
 }
 
+@Suite("Retrieve post instance for URL")
+struct retrievePostInstanceForURL {
+    
+    // This post is private becuase
+    //
+    // Logged-out visibility
+    // Discourage apps from showing my account to logged-out users
+    //
+    // has been turned on for its account
+    private let knownPrivatePost = URL(string: "https://bsky.app/profile/atmosphericstests.bsky.social/post/3lknpurb4nc23")!
+    
+    // This post has limited interactivity
+    // it's marked as only being replyable by followers
+    // but it should still be viewable
+    // since only interactions are blocked, not viewing
+    private let knownLimitedInteractivePost = URL(string: "https://bsky.app/profile/skymarks.bsky.social/post/3lknsaddvqc2h")!
+    
+    @Test("Throws if given uncredentialed atmopsphere")
+    func throws_if_not_credentialed() async throws {
+        let sut = PostRetriever()
+        
+        await #expect(throws: ATRequestPrepareError.missingActiveSession) {
+            _ = try await sut.retrievePostInstance(for: knownPrivatePost, using: .uncredentialed)
+        }
+    }
+
+    @Test("Retrieves Post Instance given URL")
+    func retrieve_posts() async throws {
+        let atmosphere = Atmosphere(credential: .testingAccount)
+
+        let sut = PostRetriever()
+
+        // intentionally set a batch size of 1
+        // so that multiple requests have to be made
+        let post = try await sut.retrievePostInstance(for: knownPrivatePost, using: atmosphere, batchSize: 1)
+        #expect(nil != post)
+        #expect(post?.uri.components(separatedBy: "/").last == knownPrivatePost.lastPathComponent)
+        #expect(post?.text == "This post should appear as private and not show up for users who are not logged in")
+    }
+
+    @Test("Retrieves Post Instance given URL for post with limited interaction")
+    func retrieve_post_limited_interaction() async throws {
+        let atmosphere = Atmosphere(credential: .testingAccount)
+
+        let sut = PostRetriever()
+        let post = try await sut.retrievePostInstance(for: knownLimitedInteractivePost, using: atmosphere)
+        #expect(nil != post)
+        #expect(post?.uri.components(separatedBy: "/").last == knownLimitedInteractivePost.lastPathComponent)
+        #expect(post?.text == "Coming soon hopefully, the ability to bookmark a private post (assuming that your account can view it)")
+    }
+}
+
 @Suite("Retrieve post for URL")
-struct retrievePostURL {
+struct retrievePostForURL {
     
     // This post is private becuase
     //
@@ -77,8 +129,9 @@ struct retrievePostURL {
 
         let post = try await sut.retrievePost(for: knownPrivatePost, using: atmosphere)
         #expect(nil != post)
-        #expect(post?.uri.components(separatedBy: "/").last == knownPrivatePost.lastPathComponent)
-        #expect(post?.text == "This post should appear as private and not show up for users who are not logged in")
+        #expect(post?.post.uri.components(separatedBy: "/").last == knownPrivatePost.lastPathComponent)
+        #expect(post?.post.text == "This post should appear as private and not show up for users who are not logged in")
+        #expect(post?.author.handle == "atmosphericstests.bsky.social")
     }
 
     @Test("Retrieves Post given URL for post with limited interaction")
@@ -88,9 +141,8 @@ struct retrievePostURL {
         let sut = PostRetriever()
         let post = try await sut.retrievePost(for: knownLimitedInteractivePost, using: atmosphere)
         #expect(nil != post)
-        #expect(post?.uri.components(separatedBy: "/").last == knownLimitedInteractivePost.lastPathComponent)
-        #expect(post?.text == "Coming soon hopefully, the ability to bookmark a private post (assuming that your account can view it)")
+        #expect(post?.post.uri.components(separatedBy: "/").last == knownLimitedInteractivePost.lastPathComponent)
+        #expect(post?.post.text == "Coming soon hopefully, the ability to bookmark a private post (assuming that your account can view it)")
+        #expect(post?.author.handle == "skymarks.bsky.social")
     }
-
-
 }

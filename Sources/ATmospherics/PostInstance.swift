@@ -7,6 +7,7 @@
 
 import Foundation
 
+/// A record of the data associated with a Post
 public struct PostInstance {
     /// The URI of the post.
     public let uri: String
