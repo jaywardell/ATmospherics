@@ -26,6 +26,10 @@ public struct PostInstance {
 
     public let links: [URL]
     
+    // TODO: add images property
+    
+    // TODO: add other embeds as properties (e.g. video)
+    
     /// The date the post was created.
     ///
     /// - Note: According to the AT Protocol specifications: "Client-declared timestamp when this
