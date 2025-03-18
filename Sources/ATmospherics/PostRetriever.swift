@@ -14,6 +14,8 @@ public struct PostRetriever: Sendable {
         case AuthorNotAvailable
     }
     
+    public init() {}
+    
     public func retrievePost(at uri: ATURI, using atmosphere: Atmosphere) async throws -> PostInstance? {
         
         let kit = try await atmosphere.atProto()
