@@ -43,12 +43,16 @@ struct retrievePostATURI {
 
 }
 
-@Suite("Retrieve post for AT URI")
+@Suite("Retrieve post for URL")
 struct retrievePostURL {
     
-    // TODO: use a known private post in the testing account,
-    // not one posted by some random person
-    private let knownPrivatePost = URL(string: "https://bsky.app/profile/tee-tee.bsky.social/post/3lk5iom43n22k")!
+    // This post is private becuase
+    //
+    // Logged-out visibility
+    // Discourage apps from showing my account to logged-out users
+    //
+    // has been turned on for its account
+    private let knownPrivatePost = URL(string: "https://bsky.app/profile/atmosphericstests.bsky.social/post/3lknpurb4nc23")!
     
     @Test("Throws if given uncredentialed atmopsphere")
     func throws_if_not_credentialed() async throws {
@@ -68,6 +72,7 @@ struct retrievePostURL {
             let post = try await sut.retrievePost(for: knownPrivatePost, using: atmosphere)
             #expect(nil != post)
             #expect(post?.uri.components(separatedBy: "/").last == knownPrivatePost.lastPathComponent)
+            #expect(post?.text == "This post should appear as private and not show up for users who are not logged in")
         }
         catch {
             print(error.localizedDescription)
