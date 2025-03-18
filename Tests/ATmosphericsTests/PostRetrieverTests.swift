@@ -74,17 +74,11 @@ struct retrievePostURL {
         let atmosphere = Atmosphere(credential: .testingAccount)
 
         let sut = PostRetriever()
-        do {
-            let post = try await sut.retrievePost(for: knownPrivatePost, using: atmosphere)
-            #expect(nil != post)
-            #expect(post?.uri.components(separatedBy: "/").last == knownPrivatePost.lastPathComponent)
-            #expect(post?.text == "This post should appear as private and not show up for users who are not logged in")
-        }
-        catch {
-            print(error.localizedDescription)
-            print(error)
-            Issue.record("failed with error \(error)")
-        }
+
+        let post = try await sut.retrievePost(for: knownPrivatePost, using: atmosphere)
+        #expect(nil != post)
+        #expect(post?.uri.components(separatedBy: "/").last == knownPrivatePost.lastPathComponent)
+        #expect(post?.text == "This post should appear as private and not show up for users who are not logged in")
     }
 
     @Test("Retrieves Post given URL for post with limited interaction")
@@ -92,17 +86,10 @@ struct retrievePostURL {
         let atmosphere = Atmosphere(credential: .testingAccount)
 
         let sut = PostRetriever()
-        do {
-            let post = try await sut.retrievePost(for: knownLimitedInteractivePost, using: atmosphere)
-            #expect(nil != post)
-            #expect(post?.uri.components(separatedBy: "/").last == knownLimitedInteractivePost.lastPathComponent)
-            #expect(post?.text == "Coming soon hopefully, the ability to bookmark a private post (assuming that your account can view it)")
-        }
-        catch {
-            print(error.localizedDescription)
-            print(error)
-            Issue.record("failed with error \(error)")
-        }
+        let post = try await sut.retrievePost(for: knownLimitedInteractivePost, using: atmosphere)
+        #expect(nil != post)
+        #expect(post?.uri.components(separatedBy: "/").last == knownLimitedInteractivePost.lastPathComponent)
+        #expect(post?.text == "Coming soon hopefully, the ability to bookmark a private post (assuming that your account can view it)")
     }
 
 
