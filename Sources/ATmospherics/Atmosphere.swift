@@ -14,6 +14,11 @@ public final class Atmosphere {
     public struct Credential: Sendable {
         let handle: String
         let appPassword: String
+        
+        public init(handle: String, appPassword: String) {
+            self.handle = handle
+            self.appPassword = appPassword
+        }
     }
     let credential: Credential?
     private var cachedATProto: ATProtoKit?
