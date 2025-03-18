@@ -7,7 +7,7 @@
 
 import Foundation
 
-public struct Post {
+public struct PostInstance {
     /// The URI of the post.
     public let uri: String
     

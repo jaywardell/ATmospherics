@@ -14,7 +14,7 @@ public struct PostRetriever: Sendable {
         case AuthorNotAvailable
     }
     
-    public func retrievePost(at uri: ATURI, using atmosphere: Atmosphere) async throws -> Post? {
+    public func retrievePost(at uri: ATURI, using atmosphere: Atmosphere) async throws -> PostInstance? {
         
         let kit = try await atmosphere.atProto()
         guard let post = try await kit.getPosts([uri.at]).posts.first else {
@@ -24,7 +24,7 @@ public struct PostRetriever: Sendable {
         return try post.getPost()
     }
     
-    public func retrievePost(for url: URL, using atmosphere: Atmosphere, limit: Int = 100) async throws -> Post? {
+    public func retrievePost(for url: URL, using atmosphere: Atmosphere, limit: Int = 100) async throws -> PostInstance? {
         
         guard let handle = url.blueSkyProfileHandle else {
             throw Error.AuthorNotAvailable
@@ -67,7 +67,7 @@ fileprivate extension AppBskyLexicon.Feed.PostViewDefinition {
     }
 
     // NOTE: technically, much of what's in here isn't covered by unit tests
-    func getPost() throws -> Post {
+    func getPost() throws -> PostInstance {
         
         guard let record = record.getRecord(ofType: AppBskyLexicon.Feed.PostRecord.self) else {
             throw PostError.NotAPostRecord
@@ -87,7 +87,7 @@ fileprivate extension AppBskyLexicon.Feed.PostViewDefinition {
         // TODO: add mentions and tags to the Post in the same way as links
         
         
-        return Post(
+        return PostInstance(
             uri: uri,
             cid: cid,
             text: record.text,
