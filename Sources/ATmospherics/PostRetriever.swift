@@ -84,6 +84,7 @@ fileprivate extension AppBskyLexicon.Feed.PostViewDefinition {
             .map(\.uri)
         ?? []
         
+        // TODO: add mentions and tags to the Post in the same way as links
         
         
         return Post(
