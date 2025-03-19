@@ -83,6 +83,8 @@ fileprivate extension AppBskyLexicon.Feed.PostViewDefinition {
         
         
         // TODO: add mentions and tags to the Post in the same way as links
+        // TODO: add embedded videos in the same way as images
+        // see EmbedViewUnion.embedVideoView
                 
         return PostInstance(
             uri: uri,
