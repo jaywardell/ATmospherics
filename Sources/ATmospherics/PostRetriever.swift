@@ -108,9 +108,13 @@ fileprivate extension AppBskyLexicon.Feed.PostViewDefinition {
 }
 
 fileprivate extension AppBskyLexicon.Feed.PostRecord {
+    
+    private var facetFeatures: [ATUnion.FacetFeatureUnion] {
+        facets?.flatMap { facet in facet.features } ?? []
+    }
+    
     var links: [URL] {
-        facets?
-            .flatMap { facet in facet.features }
+        facetFeatures
             .compactMap {
                 switch $0 {
                 case .link(let link): return link
@@ -119,7 +123,6 @@ fileprivate extension AppBskyLexicon.Feed.PostRecord {
             }
             .map(\.uri)
             .compactMap(URL.init(string:))
-        ?? []
     }
 }
 
