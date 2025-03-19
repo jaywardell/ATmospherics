@@ -16,6 +16,8 @@ public struct PostRetriever: Sendable {
     
     public init() {}
     
+    // TODO: try using getPostThread() to retrieve any post (private or public) given a uri
+    
     public func retrievePost(at uri: ATURI, using atmosphere: Atmosphere) async throws -> PostInstance? {
         
         let kit = try await atmosphere.atProto()
