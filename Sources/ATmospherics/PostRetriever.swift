@@ -99,7 +99,7 @@ fileprivate extension AppBskyLexicon.Feed.PostViewDefinition {
             uri: uri,
             cid: cid,
             text: record.text,
-            links: links.compactMap(URL.init(string:)),
+            links: links.compactMap(URL.init(string:)), images: [],
             date: record.createdAt,
             replyCount: replyCount,
             repostCount: repostCount,

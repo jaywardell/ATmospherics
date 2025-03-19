@@ -28,7 +28,14 @@ public struct PostInstance {
     
     // TODO: pull image URLs from result of getPosts() call
     // also, pull other info than just urls, like at text
-    public var imageURLs: [URL] { [] }
+    
+    public struct Image {
+        let thumbnailURL: URL
+        let fullSizeURL: URL
+        let altText: String
+    }
+    public let images: [Image]
+    public var imageURLs: [URL] { images.map(\.fullSizeURL) }
     
     // TODO: add other embeds as properties (e.g. video)
     
