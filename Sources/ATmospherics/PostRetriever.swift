@@ -94,12 +94,24 @@ fileprivate extension AppBskyLexicon.Feed.PostViewDefinition {
         
         // TODO: add mentions and tags to the Post in the same way as links
         
+        var images: [PostInstance.Image] = []
+        if let embed {
+            switch embed {
+            case .embedImagesView(let imageView):
+                print(imageView)
+                
+                images = imageView.images.map(PostInstance.Image.init)
+                
+            default: break
+            }
+        }
         
         return PostInstance(
             uri: uri,
             cid: cid,
             text: record.text,
-            links: links.compactMap(URL.init(string:)), images: [],
+            links: links.compactMap(URL.init(string:)),
+            images: images,
             date: record.createdAt,
             replyCount: replyCount,
             repostCount: repostCount,
@@ -107,5 +119,13 @@ fileprivate extension AppBskyLexicon.Feed.PostViewDefinition {
             quoteCount: quoteCount
         )
 
+    }
+}
+
+fileprivate extension PostInstance.Image {
+    init(_ viewImage: AppBskyLexicon.Embed.ImagesDefinition.ViewImage) {
+        self.altText = viewImage.altText
+        self.fullSizeURL = viewImage.fullSizeImageURL
+        self.thumbnailURL = viewImage.thumbnailImageURL
     }
 }

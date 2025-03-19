@@ -144,5 +144,32 @@ struct retrievePostForURL {
         #expect(post?.post.uri.components(separatedBy: "/").last == knownLimitedInteractivePost.lastPathComponent)
         #expect(post?.post.text == "Coming soon hopefully, the ability to bookmark a private post (assuming that your account can view it)")
         #expect(post?.author.handle == "skymarks.bsky.social")
+        #expect(post?.post.images.isEmpty == true)
     }
+    
+    let knownPostWithImages = URL(string: "https://bsky.app/profile/atmosphericstests.bsky.social/post/3lkpaglh7422h")!
+    @Test("Retrieves Embedded Post Images given URL for post")
+    func retrieve_post_images() async throws {
+        let atmosphere = Atmosphere(credential: .testingAccount)
+
+        let sut = PostRetriever()
+        let postOptional = try await sut.retrievePost(for: knownPostWithImages, using: atmosphere)
+        
+        // ensure we got the right one
+        let post = try #require(postOptional)
+        try #require(post.post.uri.components(separatedBy: "/").last == knownPostWithImages.lastPathComponent)
+        try #require(post.post.text == "Here's a post with some images")
+        
+        let expectedImageURLs = [
+            "https://cdn.bsky.app/img/feed_fullsize/plain/did:plc:zxnuajvzo3pycufhlh5ufrhr/bafkreibduizer4hzgs5myczhucoy2qnfm2j2szni77hmenq2qyvg4cfnay@jpeg", 
+            "https://cdn.bsky.app/img/feed_fullsize/plain/did:plc:zxnuajvzo3pycufhlh5ufrhr/bafkreicwtff2wlul7jfcw5kikln6yoab3vfwjz3h3st5v3nwm22x4v7umy@jpeg",
+            "https://cdn.bsky.app/img/feed_fullsize/plain/did:plc:zxnuajvzo3pycufhlh5ufrhr/bafkreigdvpzug2pye2qatpuzdtlx4dvmwo7r7uklxdc2yw36qqnncvuzeu@jpeg"
+        ]
+            .map(URL.init(string:))
+        
+        #expect(post.post.imageURLs.isEmpty == false)
+        #expect(post.post.imageURLs == expectedImageURLs)
+//        Issue.record(Comment(stringLiteral: post.post.imageURLs.map(\.absoluteString).joined(separator: ", ")))
+    }
+
 }
