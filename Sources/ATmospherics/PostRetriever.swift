@@ -81,7 +81,44 @@ fileprivate extension AppBskyLexicon.Feed.PostViewDefinition {
             throw PostError.NotAPostRecord
         }
         
-        let links: [String] = record.facets?
+        
+        // TODO: add mentions and tags to the Post in the same way as links
+                
+        return PostInstance(
+            uri: uri,
+            cid: cid,
+            text: record.text,
+            links: record.links,
+            images: images,
+            date: record.createdAt,
+            replyCount: replyCount,
+            repostCount: repostCount,
+            likeCount: likeCount,
+            quoteCount: quoteCount
+        )
+    }
+    
+    var images: [PostInstance.Image] {
+        if let embed {
+            switch embed {
+            case .embedImagesView(let imageView):
+                print(imageView)
+                
+                return imageView.images.map(PostInstance.Image.init)
+                
+            default: return []
+            }
+        }
+        else {
+            return []
+        }
+    }
+
+}
+
+fileprivate extension AppBskyLexicon.Feed.PostRecord {
+    var links: [URL] {
+        facets?
             .flatMap { facet in facet.features }
             .compactMap {
                 switch $0 {
@@ -90,35 +127,8 @@ fileprivate extension AppBskyLexicon.Feed.PostViewDefinition {
                 }
             }
             .map(\.uri)
+            .compactMap(URL.init(string:))
         ?? []
-        
-        // TODO: add mentions and tags to the Post in the same way as links
-        
-        var images: [PostInstance.Image] = []
-        if let embed {
-            switch embed {
-            case .embedImagesView(let imageView):
-                print(imageView)
-                
-                images = imageView.images.map(PostInstance.Image.init)
-                
-            default: break
-            }
-        }
-        
-        return PostInstance(
-            uri: uri,
-            cid: cid,
-            text: record.text,
-            links: links.compactMap(URL.init(string:)),
-            images: images,
-            date: record.createdAt,
-            replyCount: replyCount,
-            repostCount: repostCount,
-            likeCount: likeCount,
-            quoteCount: quoteCount
-        )
-
     }
 }
 
