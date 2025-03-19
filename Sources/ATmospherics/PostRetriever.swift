@@ -99,19 +99,10 @@ fileprivate extension AppBskyLexicon.Feed.PostViewDefinition {
     }
     
     var images: [PostInstance.Image] {
-        if let embed {
-            switch embed {
-            case .embedImagesView(let imageView):
-                print(imageView)
-                
-                return imageView.images.map(PostInstance.Image.init)
-                
-            default: return []
-            }
-        }
-        else {
-            return []
-        }
+        
+        guard case .embedImagesView(let imageView) = embed else { return [] }
+
+        return imageView.images.map(PostInstance.Image.init)
     }
 
 }
